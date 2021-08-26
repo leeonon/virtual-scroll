@@ -10,3 +10,6 @@ type optionsData = {
     data: dataVal[];
     h: number
 }
+
+
+type callBack = (e: MouseEvent) => void;
