@@ -14,6 +14,3 @@ type optionsData = {
 
 type callBack = (e: MouseEvent) => void;
 
-declare namespace reactType {
-    export type dataVal = HTMLElement | number | string
-}
