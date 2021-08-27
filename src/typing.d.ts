@@ -14,3 +14,10 @@ type optionsData = {
 
 type callBack = (e: MouseEvent) => void;
 
+
+declare module '*.module.scss' {
+    const classes: {
+        [key: string]: string;
+    };
+    export default classes;
+}
