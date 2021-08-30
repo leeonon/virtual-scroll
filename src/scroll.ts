@@ -59,18 +59,17 @@ export default function generateScroll(ele: boxEle, options: optionsData): void 
         console.warn('请输入数据');
         return ;
     }
-    const list = createEl('ul');
-    list.className = 'scroll-list-box';
-    const listbox = createEl('div');
-    listbox.className = 'scroll-list-container-box';
-    const bar = createEl('div');
-    bar.className = 'scroll-bar';
-    Object.assign(bar.style, barStyle);
+    // 包含总长度的div元素
+    const listbox = generateEle('div', 'scroll-list-container-box', listboxStyle);
 
+    // 所有内容高度的滚动区域
     listStyle.height = h * data.length + 'px';
-    Object.assign(list.style, listStyle);
+    const list = generateEle('ul', 'scroll-list-box', listStyle);
     
-    Object.assign(listbox.style, listboxStyle);
+    // 滚动条
+    const bar = generateEle('div', 'scroll-bar', barStyle);
+
+
     listbox.appendChild(list);
     el.appendChild(listbox);
     el.appendChild(bar);
@@ -79,6 +78,20 @@ export default function generateScroll(ele: boxEle, options: optionsData): void 
     list.appendChild(frag);
     dealScroll(listbox, bar, h, h * data.length);
 }
+
+/**
+ * @desc 根据标签名生成对应的元素，并添加对应的样式
+ * @param {string} tag 生成的标签名
+ * @param {string} name 生成的标签的class名字
+ * @param {}
+*/
+function generateEle(tag: string = 'div', name: string, style: style): HTMLElement {
+    const el = createEl(tag);
+    el.className = name;
+    Object.assign(el.style, style);
+    return el
+}
+
 
 function dealScroll(el: HTMLElement, bar: HTMLElement, h: number, sumH: number): void {
     const box_h = parseInt(el.style.height);
