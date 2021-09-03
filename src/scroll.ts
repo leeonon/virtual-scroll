@@ -69,8 +69,6 @@ export default function generateScroll(ele: boxEle, options: optionsData): void 
 
 	// 滚动条
 	const bar = generateEle('div', 'scroll-bar', barStyle);
-	// 给滚动条绑定点击拖拽事件
-	bindDragScroll(listbox, bar, h, h * data.length);
 
 	listbox.appendChild(list);
 	el.appendChild(listbox);
@@ -79,8 +77,9 @@ export default function generateScroll(ele: boxEle, options: optionsData): void 
 	const frag = generateItems(0, h);
 	list.appendChild(frag);
 
-	const boxH = parseInt(getStyle(listbox, 'height') as any);
 	dealScroll(listbox, bar, h, h * data.length);
+	// 给滚动条绑定点击拖拽事件
+	bindDragScroll(listbox, bar, h, h * data.length);
 }
 
 /**
@@ -102,9 +101,11 @@ function dealScroll(el: HTMLElement, bar: HTMLElement, h: number, sumH: number):
 	sumH = sumH - box_h;
 	el.addEventListener('scroll', function (e: Event) {
 		const scroll_v = el.scrollTop;
-		const per = scroll_v / sumH;
-		const translate_y = (box_h - bar_h) * per;
-		bar.style.transform = `translateY(${translate_y}px)`;
+		if (isAutoScroll) {
+			const per = scroll_v / sumH;
+			const translate_y = (box_h - bar_h) * per;
+			bar.style.transform = `translateY(${translate_y}px)`;
+		}
 		const base_num = Math.floor(scroll_v / h);
 		const frag = generateItems(base_num, h);
 		const list_el = el.firstChild as HTMLElement;
@@ -132,6 +133,8 @@ function generateItems(base: number, h: number): DocumentFragment {
 	return frag;
 }
 
+// 是否是默认鼠标滚动
+let isAutoScroll = true;
 /**
  * @desc 滚动条拖拽事件
  * @param {HTMLElement} el 包裹滚动列表的元素
@@ -143,8 +146,12 @@ function bindDragScroll(el: HTMLElement, bar: HTMLElement, h: number, sumH: numb
 	let isCanMove = false;
 	let initY: number;
 	let translate_y: number = 0;
+	const box_h = parseInt(getStyle(el, 'height') as any);
+	const bar_h = parseInt(getStyle(bar, 'height') as any);
+	sumH = sumH - box_h;
 	bar.addEventListener('mousedown', e => {
 		isCanMove = true;
+		isAutoScroll = false;
 		initY = e.clientY;
 		const t_y = bar.style.transform;
 		const t_y_Rxp = /translateY\((\d+\.?(\d+)?)px\)/;
@@ -155,15 +162,22 @@ function bindDragScroll(el: HTMLElement, bar: HTMLElement, h: number, sumH: numb
 	document.addEventListener('mousemove', e => {
 		if (isCanMove) {
 			const diffY = e.clientY - initY;
-
-			const v = translate_y + diffY;
-			const top = el.scrollTop;
-			el.scrollTop = top + diffY;
+			let v = translate_y + diffY;
+			const per = v / (box_h - bar_h);
+			if (v < 0) {
+				v = 0;
+			} else if (v > box_h - bar_h) {
+				v = box_h - bar_h;
+			}
+			const top = el.scrollTop; // 已经滚动的高度
+			const scroll_y = per * sumH;
+			el.scrollTop = scroll_y;
 			bar.style.transform = `translateY(${v}px)`;
 		}
 	});
 	document.addEventListener('mouseup', e => {
 		isCanMove = false;
+		isAutoScroll = true;
 	});
 }
 
