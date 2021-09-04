@@ -169,7 +169,6 @@ function bindDragScroll(el: HTMLElement, bar: HTMLElement, h: number, sumH: numb
 			} else if (v > box_h - bar_h) {
 				v = box_h - bar_h;
 			}
-			const top = el.scrollTop; // 已经滚动的高度
 			const scroll_y = per * sumH;
 			el.scrollTop = scroll_y;
 			bar.style.transform = `translateY(${v}px)`;
