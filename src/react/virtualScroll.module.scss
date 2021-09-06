@@ -1,36 +1,39 @@
-.scroll-list-container-box{
-    height: 100%;
-    overflow: auto;
-    position: relative;
-    &::-webkit-scrollbar,&::-webkit-scrollbar-thumb,&::-webkit-scrollbar-track{
-        width: 0;
-        height: 0;
-        display: none;
-    }
-    .scroll-list-box{
-        margin: 0;
-        padding: 0;
-        position: relative;
-        .item{
-            list-style: none;
-            padding: 0 5px;
-            position: absolute;
-            left: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: no-wrap;
-            box-sizing: border-box;
-        }
-    }
-    
+.scroll-list-container-box {
+	height: 100%;
+	overflow: auto;
+	position: relative;
+	&::-webkit-scrollbar,
+	&::-webkit-scrollbar-thumb,
+	&::-webkit-scrollbar-track {
+		width: 0;
+		height: 0;
+		display: none;
+	}
+	.scroll-list-box {
+		margin: 0;
+		padding: 0;
+		position: relative;
+		.item {
+			list-style: none;
+			padding: 0 5px;
+			position: absolute;
+			left: 0;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: no-wrap;
+			box-sizing: border-box;
+		}
+	}
 }
-.scroll-bar{
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 10px;
-    height: 30%;
-    border-radius: 10px;
-    background: rgba(102, 204, 255, .6);
-    transform: translateY(0);
+.scroll-bar {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 10;
+	width: 10px;
+	height: 30%;
+	border-radius: 10px;
+	background: rgba(102, 204, 255, 0.6);
+	transform: translateY(0);
+	cursor: pointer;
 }
