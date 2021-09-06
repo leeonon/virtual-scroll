@@ -24,17 +24,60 @@ export default function virtualScroll(props: { options: listOptions }): ReactEle
 		box_h = parseInt(box_h_v);
 		bar_h = parseInt(bar_h_v);
 		sumH -= box_h;
+		document.addEventListener('mousemove', docMouseMove);
+		document.addEventListener('mouseup', docMouseUp);
+		return () => {
+			document.removeEventListener('mousemove', docMouseMove);
+			document.removeEventListener('mouseup', docMouseUp);
+		};
 	});
 
 	const scrollDeal = (eve: any) => {
 		const scroll_v = eve.target.scrollTop;
-		const per = scroll_v / sumH;
-		const translate_y = (box_h - bar_h) * per;
-		bar.current.style.transform = `translateY(${translate_y}px)`;
+		if (isAutoScroll) {
+			const per = scroll_v / sumH;
+			const translate_y = (box_h - bar_h) * per;
+			bar.current.style.transform = `translateY(${translate_y}px)`;
+		}
 		const base_num = Math.floor(scroll_v / h);
 		setBase(base_num);
 	};
 
+	// 拖拽滚动条实现列表一致
+	const [isCanMove, setIsCanMove] = useState(false);
+	const [initY, setInitY] = useState(0);
+	const [translate_y, setTranslate_y] = useState(0);
+	const [isAutoScroll, setIsAutoScroll] = useState(true);
+	const scrollBarDown = (e: any) => {
+		setIsCanMove(true);
+		setIsAutoScroll(false);
+		setInitY(e.clientY);
+		const el = bar.current;
+		const t_y = el.style.transform;
+		const t_y_Rxp = /translateY\((\d+\.?(\d+)?)px\)/;
+		if (t_y.match(t_y_Rxp)) {
+			setTranslate_y(Number(RegExp.$1));
+		}
+	};
+	const docMouseMove = (e: MouseEvent) => {
+		if (isCanMove) {
+			const diffY = e.clientY - initY;
+			let v = translate_y + diffY;
+			const per = v / (box_h - bar_h);
+			if (v < 0) {
+				v = 0;
+			} else if (v > box_h - bar_h) {
+				v = box_h - bar_h;
+			}
+			const scroll_y = per * sumH;
+			box.current.scrollTop = scroll_y;
+			bar.current.style.transform = `translateY(${v}px)`;
+		}
+	};
+	const docMouseUp = () => {
+		setIsCanMove(false);
+		setIsAutoScroll(true);
+	};
 	return (
 		<div style={{ height: '100%', overflow: 'hidden', position: 'relative' }}>
 			<div className={styles['scroll-list-container-box']} onScroll={scrollDeal} ref={box}>
@@ -52,7 +95,7 @@ export default function virtualScroll(props: { options: listOptions }): ReactEle
 					})}
 				</ul>
 			</div>
-			<div className={styles['scroll-bar']} ref={bar}></div>
+			<div className={styles['scroll-bar']} ref={bar} onMouseDown={scrollBarDown}></div>
 		</div>
 	);
 }
