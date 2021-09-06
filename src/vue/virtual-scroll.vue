@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<div class="scroll-list-container-box" @scroll="scrollDeal">
+		<div class="scroll-list-container-box" @scroll="scrollDeal" ref="box">
 			<ul class="scroll-list-box" :style="{ height: sumHeight + 'px' }">
 				<li class="item" v-for="(item, i) in list" :key="item + '-' + i" :style="itemStyle(item)">
 					{{ item }}
@@ -11,7 +11,8 @@
 	</div>
 </template>
 <script lang="ts">
-import { computed, defineComponent, reactive, ref } from 'vue';
+import { computed, defineComponent, onMounted, reactive, ref } from 'vue';
+import { getStyle } from '../utils/getStyle';
 
 function getShowData(base: number, data: Array<any>): Array<any> {
 	base -= base;
@@ -34,6 +35,16 @@ export default defineComponent({
 	},
 	setup(props) {
 		let { height, data } = props;
+		const box = ref(null);
+		let box_h: number;
+		let bar_h: number;
+		onMounted(() => {
+			const box_h_v = getStyle(box.value as unknown as HTMLElement, 'height') as string;
+			const bar_h_v = getStyle(bar.value as unknown as HTMLElement, 'height') as string;
+			box_h = parseInt(box_h_v);
+			bar_h = parseInt(bar_h_v);
+			sumHeight.value -= box_h;
+		});
 		const base = ref(0);
 		const sumHeight = ref(data.length * height);
 		const list = computed(() => {
@@ -53,8 +64,7 @@ export default defineComponent({
 		const scrollDeal = (eve: any) => {
 			const scroll_v = eve.target.scrollTop;
 			const per = scroll_v / sumHeight.value;
-			const box_h = 400;
-			const translate_y = box_h * per;
+			const translate_y = (box_h - bar_h) * per;
 			const el = bar.value! as HTMLElement;
 			el.style.transform = `translateY(${translate_y}px)`;
 			const base_num = Math.floor(scroll_v / height);
@@ -71,6 +81,7 @@ export default defineComponent({
 			itemStyle,
 			scrollDeal,
 			bar,
+			box,
 		};
 	},
 });
