@@ -28,6 +28,15 @@ const barStyle = {
 	'border-radius': '10px',
 	transfrom: 'translateY(0px)',
 };
+const barBoxStyle = {
+	position: 'absolute',
+	right: 0,
+	top: 0,
+	bottom: 0,
+	zIndex: 10,
+	width: '10px',
+	background: 'none',
+};
 
 const listboxStyle = {
 	height: '100%',
@@ -68,11 +77,13 @@ export default function generateScroll(ele: boxEle, options: optionsData): void 
 	const list = generateEle('ul', 'scroll-list-box', listStyle);
 
 	// 滚动条
+	const barBox = generateEle('div', 'scroll-bar-box', barBoxStyle);
 	const bar = generateEle('div', 'scroll-bar', barStyle);
 
 	listbox.appendChild(list);
+	barBox.appendChild(bar);
 	el.appendChild(listbox);
-	el.appendChild(bar);
+	el.appendChild(barBox);
 
 	const frag = generateItems(0, h);
 	list.appendChild(frag);
@@ -80,6 +91,8 @@ export default function generateScroll(ele: boxEle, options: optionsData): void 
 	dealScroll(listbox, bar, h, h * data.length);
 	// 给滚动条绑定点击拖拽事件
 	bindDragScroll(listbox, bar, h, h * data.length);
+	// 给滚动条父元素绑定点击事件
+	bindClick(barBox, bar, listbox, h * data.length);
 }
 
 /**
@@ -149,6 +162,9 @@ function bindDragScroll(el: HTMLElement, bar: HTMLElement, h: number, sumH: numb
 	const box_h = parseInt(getStyle(el, 'height') as any);
 	const bar_h = parseInt(getStyle(bar, 'height') as any);
 	sumH = sumH - box_h;
+	bar.addEventListener('click', e => {
+		e.stopPropagation();
+	});
 	bar.addEventListener('mousedown', e => {
 		isCanMove = true;
 		isAutoScroll = false;
@@ -181,7 +197,34 @@ function bindDragScroll(el: HTMLElement, bar: HTMLElement, h: number, sumH: numb
 }
 
 /**
+ * @desc 给侧边滚动条父元素绑定点击事件，让滚动条滚动到指定的位置
+ *
+ */
+function bindClick(el: HTMLElement, bar: HTMLElement, listbox: HTMLElement, sumH: number): void {
+	const box_h = parseInt(getStyle(el, 'height') as any);
+	const bar_h = parseInt(getStyle(bar, 'height') as any);
+	sumH = sumH - box_h;
+	el.addEventListener('click', (e: MouseEvent) => {
+		let h = bar_h / 2;
+		let y = e.offsetY - h;
+		if (y < 0) {
+			y = 0;
+		}
+		if (y > box_h - bar_h) {
+			y = box_h - bar_h;
+		}
+		const per = y / (box_h - bar_h);
+		const scroll_y = sumH * per;
+		bar.style.transform = `translateY(${y}px)`;
+		listbox.scrollTop = scroll_y;
+	});
+}
+
+/**
  * @desc 获取指定元素的样式
+ * @param {HTMLElement} el 需要获取样式的元素
+ * @param {string} tag 指定获取的样式属性
+ * @returns {CSSStyleDeclaration | string | number} 返回样式集合或指定的样式值
  */
 function getStyle(el: HTMLElement, tag?: string): CSSStyleDeclaration | string | number {
 	if (!el) {
