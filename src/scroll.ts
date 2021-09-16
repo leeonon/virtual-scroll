@@ -16,7 +16,7 @@ function createEl(tag: string): HTMLElement {
 	return document.createElement(tag);
 }
 
-const barStyle = {
+const barStyle: newStyle = {
 	position: 'absolute',
 	right: 0,
 	top: 0,
@@ -28,7 +28,7 @@ const barStyle = {
 	'border-radius': '10px',
 	transfrom: 'translateY(0px)',
 };
-const barBoxStyle = {
+const barBoxStyle: newStyle = {
 	position: 'absolute',
 	right: 0,
 	top: 0,
@@ -38,18 +38,18 @@ const barBoxStyle = {
 	background: 'none',
 };
 
-const listboxStyle = {
+const listboxStyle: newStyle = {
 	height: '100%',
 	overflow: 'auto',
 };
 
-const listStyle: style = {
+const listStyle: newStyle = {
 	margin: 0,
 	padding: 0,
 	position: 'relative',
 };
 
-const itemStyle: style = {
+const itemStyle: newStyle = {
 	'list-style': 'none',
 	padding: '0 5px',
 	height: '30px',
