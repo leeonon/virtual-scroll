@@ -47,6 +47,7 @@ const listStyle: newStyle = {
 	margin: 0,
 	padding: 0,
 	position: 'relative',
+	'user-select': 'none',
 };
 
 const itemStyle: newStyle = {
@@ -101,7 +102,7 @@ export default function generateScroll(ele: boxEle, options: optionsData): void 
  * @param {string} name 生成的标签的class名字
  * @param {}
  */
-function generateEle(tag: string = 'div', name: string, style: style): HTMLElement {
+function generateEle(tag = 'div', name: string, style: style): HTMLElement {
 	const el = createEl(tag);
 	el.className = name;
 	Object.assign(el.style, style);
@@ -112,7 +113,7 @@ function dealScroll(el: HTMLElement, bar: HTMLElement, h: number, sumH: number):
 	const box_h = parseInt(getStyle(el, 'height') as any);
 	const bar_h = parseInt(getStyle(bar, 'height') as any);
 	sumH = sumH - box_h;
-	el.addEventListener('scroll', function (e: Event) {
+	el.addEventListener('scroll', function () {
 		const scroll_v = el.scrollTop;
 		if (isAutoScroll) {
 			const per = scroll_v / sumH;
@@ -158,7 +159,7 @@ let isAutoScroll = true;
 function bindDragScroll(el: HTMLElement, bar: HTMLElement, h: number, sumH: number): void {
 	let isCanMove = false;
 	let initY: number;
-	let translate_y: number = 0;
+	let translate_y = 0;
 	const box_h = parseInt(getStyle(el, 'height') as any);
 	const bar_h = parseInt(getStyle(bar, 'height') as any);
 	sumH = sumH - box_h;
@@ -205,7 +206,7 @@ function bindClick(el: HTMLElement, bar: HTMLElement, listbox: HTMLElement, sumH
 	const bar_h = parseInt(getStyle(bar, 'height') as any);
 	sumH = sumH - box_h;
 	el.addEventListener('click', (e: MouseEvent) => {
-		let h = bar_h / 2;
+		const h = bar_h / 2;
 		let y = e.offsetY - h;
 		if (y < 0) {
 			y = 0;
