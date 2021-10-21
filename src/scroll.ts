@@ -1,6 +1,7 @@
 /**
  * @desc 通过传入的容器选择器或者容器元素，返回容器
- *
+ * @param {boxEle} el 生成虚拟列表的容器元素或者其对应的选择器
+ * @returns {boxEle} 返回容器
  */
 function getEle(el: boxEle): boxEle {
 	let _el: boxEle;
@@ -11,7 +12,11 @@ function getEle(el: boxEle): boxEle {
 	}
 	return _el;
 }
-
+/**
+ * @desc 通过标签名创建HTML元素
+ * @param {string} tag 需要创建标签的名字
+ * @returns {HTMLElement} 创建的元素
+ */
 function createEl(tag: string): HTMLElement {
 	return document.createElement(tag);
 }
@@ -61,6 +66,12 @@ const itemStyle: newStyle = {
 };
 
 let data: dataVal[];
+/**
+ * @desc 生成虚拟滚动列表
+ * @param {boxEle} ele 虚拟列表的容器
+ * @param {optionsData} options 列表元素的相关数据
+ * @returns {void}
+ */
 export default function generateScroll(ele: boxEle, options: optionsData): void {
 	const el = getEle(ele) as HTMLElement;
 	data = options.data;
@@ -99,7 +110,8 @@ export default function generateScroll(ele: boxEle, options: optionsData): void 
  * @desc 根据标签名生成对应的元素，并添加对应的样式
  * @param {string} tag 生成的标签名
  * @param {string} name 生成的标签的class名字
- * @param {}
+ * @param {style} style 自定义的样式对象
+ * @returns {HTMLElement} 返回创建的元素
  */
 function generateEle(tag: string = 'div', name: string, style: style): HTMLElement {
 	const el = createEl(tag);
@@ -108,6 +120,14 @@ function generateEle(tag: string = 'div', name: string, style: style): HTMLEleme
 	return el;
 }
 
+/**
+ * @desc 监听鼠标滚动事件来处理侧边栏以及展示数据的处理
+ * @param {HTMLElement} el 容器元素
+ * @param {HTMLElement} bar 滚动条元素
+ * @param {number} h 每个滚动元素的高度
+ * @param {number} sumH 容器的总高度
+ * @returns {void}
+ */
 function dealScroll(el: HTMLElement, bar: HTMLElement, h: number, sumH: number): void {
 	const box_h = parseInt(getStyle(el, 'height') as any);
 	const bar_h = parseInt(getStyle(bar, 'height') as any);
@@ -129,6 +149,12 @@ function dealScroll(el: HTMLElement, bar: HTMLElement, h: number, sumH: number):
 	});
 }
 
+/**
+ * @desc 根据滚动的高度自动生成视图区域内展示的数据
+ * @param {number} base 当前展示在视图区域内的第一个元素在所有数据中的下标
+ * @param {number} h 每条数据的高度
+ * @returns {DocumentFragment} 包含所有视图区域内元素的文档碎片
+ */
 function generateItems(base: number, h: number): DocumentFragment {
 	base -= 2;
 	if (base <= 0) {
@@ -154,6 +180,7 @@ let isAutoScroll = true;
  * @param {HTMLElement} bar 滚动条
  * @param {Number} h 每一个元素的高度
  * @param {Number} sumH 列表总高度
+ * @returns {void}
  */
 function bindDragScroll(el: HTMLElement, bar: HTMLElement, h: number, sumH: number): void {
 	let isCanMove = false;
@@ -198,7 +225,11 @@ function bindDragScroll(el: HTMLElement, bar: HTMLElement, h: number, sumH: numb
 
 /**
  * @desc 给侧边滚动条父元素绑定点击事件，让滚动条滚动到指定的位置
- *
+ * @param {HTMLElement} el 容器元素
+ * @param {HTMLElement} bar 滚动条元素
+ * @param {HTMLElement} listbox 虚拟列表的父容器
+ * @param {number} sumH 容器的高度
+ * @returns {void}
  */
 function bindClick(el: HTMLElement, bar: HTMLElement, listbox: HTMLElement, sumH: number): void {
 	const box_h = parseInt(getStyle(el, 'height') as any);
