@@ -35,12 +35,12 @@ export default defineComponent({
 	},
 	setup(props) {
 		let { height, data } = props;
-		const box = ref(null);
+		const box = ref<HTMLElement>(null);
 		let box_h: number;
 		let bar_h: number;
 		onMounted(() => {
-			const box_h_v = getStyle(box.value as unknown as HTMLElement, 'height') as string;
-			const bar_h_v = getStyle(bar.value as unknown as HTMLElement, 'height') as string;
+			const box_h_v = getStyle(box.value, 'height') as string;
+			const bar_h_v = getStyle(bar.value, 'height') as string;
 			box_h = parseInt(box_h_v);
 			bar_h = parseInt(bar_h_v);
 			sumHeight.value -= box_h;
@@ -59,7 +59,7 @@ export default defineComponent({
 			return _list;
 		});
 		const h = ref(height);
-		const bar = ref(null);
+		const bar = ref<HTMLElement>(null);
 		const itemStyle = (item: any) => {
 			return {
 				height: height + 'px',
