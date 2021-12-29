@@ -1,7 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@commitlint/cli': 16.0.0
+  '@commitlint/cli': 16.0.1
   '@commitlint/config-conventional': 16.0.0
   '@types/react': 17.0.38
   '@typescript-eslint/eslint-plugin': 5.8.1
@@ -24,7 +24,7 @@ dependencies:
   vue: 3.2.26
 
 devDependencies:
-  '@commitlint/cli': 16.0.0
+  '@commitlint/cli': 16.0.1
   '@commitlint/config-conventional': 16.0.0
   '@types/react': 17.0.38
   '@typescript-eslint/eslint-plugin': 5.8.1_3a47348159e115370aa4cba56aba33b6
@@ -66,8 +66,8 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
 
-  /@commitlint/cli/16.0.0:
-    resolution: {integrity: sha512-MaYQbwsBZ3+OHJQm9cbSMj4P1Eptqqk/p8WY5MTzVZDRei8JcweNaMtwU7P+h9VeBTlFYSn4vkZYiZXzVK2Cww==}
+  /@commitlint/cli/16.0.1:
+    resolution: {integrity: sha512-61gGRy65WiVDRsqP0dAR2fAgE3qrTBW3fgz9MySv32y5Ib3ZXXDDq6bGyQqi2dSaPuDYzNCRwwlC7mmQM73T/g==}
     engines: {node: '>=v12'}
     hasBin: true
     dependencies:
