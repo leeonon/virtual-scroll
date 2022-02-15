@@ -3,7 +3,7 @@
 		<div class="scroll-list-container-box" @scroll="scrollDeal" ref="box">
 			<ul class="scroll-list-box" :style="{ height: sumHeight + 'px' }">
 				<li class="item" v-for="(item, i) in list" :key="item + '-' + i" :style="itemStyle(item)">
-					{{ item }}
+					<list-item :content="item"></list-item>
 				</li>
 			</ul>
 		</div>
@@ -11,8 +11,9 @@
 	</div>
 </template>
 <script lang="ts">
-import { computed, defineComponent, onBeforeMount, onMounted, reactive, ref } from 'vue';
+import { computed, defineComponent, onBeforeMount, onMounted, provide, ref } from 'vue';
 import { getStyle } from '../utils/getStyle';
+import ListItem from './list-item'
 
 function getShowData(base: number, data: Array<any>): Array<any> {
 	base -= base;
@@ -23,6 +24,9 @@ function getShowData(base: number, data: Array<any>): Array<any> {
 }
 
 export default defineComponent({
+	components: {
+		ListItem
+	},
 	props: {
 		data: {
 			type: Array,
@@ -33,8 +37,9 @@ export default defineComponent({
 			default: 30,
 		},
 	},
-	setup(props) {
+	setup(props, ctx) {
 		let { height, data } = props;
+		provide('virtual-scroll', ctx)
 		const box = ref<HTMLElement>(null);
 		let box_h: number;
 		let bar_h: number;
@@ -61,9 +66,10 @@ export default defineComponent({
 		const h = ref(height);
 		const bar = ref<HTMLElement>(null);
 		const itemStyle = (item: any) => {
+			const index = data.indexOf(item)
 			return {
 				height: height + 'px',
-				top: ((item as number) - 1) * height + 'px',
+				top: index * height + 'px',
 			};
 		};
 
@@ -135,6 +141,7 @@ export default defineComponent({
 	height: 100%;
 	overflow: hidden;
 	position: relative;
+	user-select: none;
 	.scroll-list-container-box {
 		height: 100%;
 		overflow: auto;
