@@ -6,7 +6,7 @@ specifiers:
   '@types/react': 17.0.39
   '@typescript-eslint/eslint-plugin': 5.11.0
   '@typescript-eslint/parser': 5.11.0
-  '@vitejs/plugin-vue': 2.2.0
+  '@vitejs/plugin-vue': 2.2.2
   '@vue/compiler-sfc': 3.2.31
   eslint: 8.9.0
   husky: 7.0.4
@@ -29,7 +29,7 @@ devDependencies:
   '@types/react': 17.0.39
   '@typescript-eslint/eslint-plugin': 5.11.0_15a231715447500ed5c06da64c8aef1c
   '@typescript-eslint/parser': 5.11.0_eslint@8.9.0+typescript@4.5.5
-  '@vitejs/plugin-vue': 2.2.0_vite@2.8.4+vue@3.2.26
+  '@vitejs/plugin-vue': 2.2.2_vite@2.8.4+vue@3.2.26
   '@vue/compiler-sfc': 3.2.31
   eslint: 8.9.0
   husky: 7.0.4
@@ -468,8 +468,8 @@ packages:
       eslint-visitor-keys: 3.2.0
     dev: true
 
-  /@vitejs/plugin-vue/2.2.0_vite@2.8.4+vue@3.2.26:
-    resolution: {integrity: sha512-wXigM1EwN2G7rZcwG6kLk9ivvIMhx2363tCEvMBiXcTu5nePM/12hUPVzPb83Uugt6U+zom1gTpJopi/Ow/jwg==}
+  /@vitejs/plugin-vue/2.2.2_vite@2.8.4+vue@3.2.26:
+    resolution: {integrity: sha512-3C0s45VOwIFEDU+2ownJOpb0zD5fnjXWaHVOLID2R1mYOlAx3doNBFnNbVjaZvpke/L7IdPJXjpyYpXZToDKig==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       vite: ^2.5.10
