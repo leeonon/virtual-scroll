@@ -12,7 +12,7 @@
 </template>
 <script lang="ts">
 import { computed, defineComponent, onBeforeMount, onMounted, provide, ref } from 'vue';
-import { getStyle } from '../utils/getStyle';
+import { getStyle } from './getStyle';
 import ListItem from './list-item'
 
 function getShowData(base: number, data: Array<any>): Array<any> {

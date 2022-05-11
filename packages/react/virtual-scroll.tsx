@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
-import { getStyle } from '../utils/getStyle';
+import { getStyle } from './getStyle';
 import styles from './virtualScroll.module.scss';
 
 type dataVal = HTMLElement | number | string;

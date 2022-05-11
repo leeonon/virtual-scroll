@@ -1,3 +1,11 @@
+type boxEle = HTMLElement | string | null;
+type newStyle = Record<string, string | number>;
+type style = newStyle;
+type dataVal = HTMLElement | number | string;
+type optionsData = {
+	data: dataVal[];
+	h: number;
+};
 /**
  * @desc 通过传入的容器选择器或者容器元素，返回容器
  * @param {boxEle} el 生成虚拟列表的容器元素或者其对应的选择器

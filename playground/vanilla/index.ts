@@ -1,5 +1,5 @@
-import scroll from './scroll';
-import './base.css';
+import scroll from '../../packages/vanilla/scroll';
+import '../../packages/vanilla/base.css';
 
 const options = {
 	data: Array.from('0'.repeat(1000), (item, i) => i + 1),

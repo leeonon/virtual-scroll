@@ -38,7 +38,7 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .virtual-box {
-	height: 100%;
+	height: 800px;
 	:deep(.item) {
 			width: 100%;
 		}
