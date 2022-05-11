@@ -4,7 +4,7 @@
  * @param {string} attr 需要获取值的属性
  * @returns {CSSStyleDeclaration | string | number} 返回元素的样式集合或者指定的样式值
  */
-export function getStyle(el: HTMLElement, attr?: string): CSSStyleDeclaration | string | number {
+export function getStyle(el: HTMLElement | null, attr?: string): CSSStyleDeclaration | string | number {
 	if (!el) {
 		return '';
 	}

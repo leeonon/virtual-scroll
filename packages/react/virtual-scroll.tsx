@@ -1,21 +1,27 @@
+import type { FC, ReactNode } from 'react';
+
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import { getStyle } from './getStyle';
 import styles from './virtualScroll.module.scss';
 
-type dataVal = HTMLElement | number | string;
+type dataVal = ReactNode | number | string;
 type listVal = dataVal[];
 type listOptions = {
 	data: listVal;
 	h?: number;
 };
-export default function virtualScroll(props: { options: listOptions }): ReactElement {
-	const { options } = props;
+
+interface IVirtualScrollProps {
+	options: listOptions
+}
+
+const VirtualScroll: FC<IVirtualScrollProps> = ({ options }) => {
 	const data = options.data;
 	const h = options.h || 30;
 	let sumH = h * data.length;
 	const [base, setBase] = useState(0);
-	const bar = useRef(null);
-	const box = useRef(null);
+	const bar = useRef<HTMLDivElement>(null);
+	const box = useRef<HTMLDivElement>(null);
 	let box_h: number;
 	let bar_h: number;
 	useEffect(() => {
@@ -30,14 +36,16 @@ export default function virtualScroll(props: { options: listOptions }): ReactEle
 			document.removeEventListener('mousemove', docMouseMove);
 			document.removeEventListener('mouseup', docMouseUp);
 		};
-	});
+	}, []);
 
 	const scrollDeal = (eve: any) => {
 		const scroll_v = eve.target.scrollTop;
 		if (isAutoScroll) {
 			const per = scroll_v / sumH;
 			const translate_y = (box_h - bar_h) * per;
-			bar.current.style.transform = `translateY(${translate_y}px)`;
+			if (bar?.current) {
+			  bar.current.style.transform = `translateY(${translate_y}px)`;
+			}
 		}
 		const base_num = Math.floor(scroll_v / h);
 		setBase(base_num);
@@ -53,9 +61,9 @@ export default function virtualScroll(props: { options: listOptions }): ReactEle
 		setIsAutoScroll(false);
 		setInitY(e.clientY);
 		const el = bar.current;
-		const t_y = el.style.transform;
+		const t_y = el?.style.transform;
 		const t_y_Rxp = /translateY\((\d+\.?(\d+)?)px\)/;
-		if (t_y.match(t_y_Rxp)) {
+		if (t_y?.match(t_y_Rxp)) {
 			setTranslate_y(Number(RegExp.$1));
 		}
 	};
@@ -70,8 +78,12 @@ export default function virtualScroll(props: { options: listOptions }): ReactEle
 				v = box_h - bar_h;
 			}
 			const scroll_y = per * sumH;
-			box.current.scrollTop = scroll_y;
-			bar.current.style.transform = `translateY(${v}px)`;
+			if (box.current) {
+				box.current.scrollTop = scroll_y;
+			}
+			if (bar.current) {
+				bar.current.style.transform = `translateY(${v}px)`;
+			}
 		}
 	};
 	const docMouseUp = () => {
@@ -99,6 +111,8 @@ export default function virtualScroll(props: { options: listOptions }): ReactEle
 		</div>
 	);
 }
+
+export default VirtualScroll;
 
 function getShowData(base: number, data: listVal): listVal {
 	base -= base;
